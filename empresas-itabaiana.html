@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Empresas Parceiras em Itabaiana</title>
+  <style>
+    :root {
+      --bg: #f6f1e8;
+      --bg-accent: #eadfcd;
+      --panel: rgba(255, 252, 247, 0.94);
+      --panel-border: rgba(92, 62, 34, 0.16);
+      --text: #2d2219;
+      --muted: #6a5748;
+      --primary: #8a4b22;
+      --primary-strong: #5f2f13;
+      --tag: #efe2d1;
+      --shadow: 0 18px 40px rgba(80, 50, 28, 0.12);
+      --radius: 22px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(203, 155, 105, 0.22), transparent 28%),
+        radial-gradient(circle at top right, rgba(121, 157, 130, 0.18), transparent 24%),
+        linear-gradient(180deg, var(--bg) 0%, #f9f6f0 48%, var(--bg-accent) 100%);
+      padding: 32px 18px 56px;
+    }
+
+    .shell {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+    }
+
+    .hero,
+    .filters,
+    .results {
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .hero {
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -40px -70px auto;
+      width: 240px;
+      height: 240px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(138, 75, 34, 0.18), transparent 68%);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: 12px 0 10px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      line-height: 1.05;
+      max-width: none;
+    }
+
+    .hero p {
+      margin: 0;
+      max-width: 70ch;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+      margin-top: 22px;
+    }
+
+    .stat {
+      padding: 16px 18px;
+      background: rgba(255, 255, 255, 0.65);
+      border: 1px solid rgba(138, 75, 34, 0.12);
+      border-radius: 18px;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 1.7rem;
+      color: var(--primary-strong);
+      margin-bottom: 4px;
+    }
+
+    .filters {
+      margin-top: 18px;
+      padding: 22px;
+    }
+
+    .filter-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr auto;
+      gap: 14px;
+      align-items: end;
+    }
+
+    label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--primary-strong);
+    }
+
+    input,
+    select,
+    button {
+      width: 100%;
+      border: 1px solid rgba(95, 47, 19, 0.18);
+      border-radius: 14px;
+      padding: 14px 16px;
+      font: inherit;
+    }
+
+    input:focus,
+    select:focus,
+    button:focus {
+      outline: 2px solid rgba(138, 75, 34, 0.22);
+      outline-offset: 2px;
+    }
+
+    button {
+      background: var(--primary);
+      color: #fffaf4;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 140ms ease, background 140ms ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      background: var(--primary-strong);
+    }
+
+    .results {
+      margin-top: 18px;
+      padding: 22px;
+    }
+
+    .results-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+      color: var(--muted);
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      border: 1px solid rgba(95, 47, 19, 0.12);
+      border-radius: 18px;
+      padding: 18px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(247, 239, 226, 0.92));
+    }
+
+    .card h2 {
+      margin: 0 0 8px;
+      font-size: 1.08rem;
+      line-height: 1.35;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: var(--tag);
+      color: var(--primary-strong);
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+    }
+
+    .meta {
+      display: grid;
+      gap: 10px;
+    }
+
+    .meta div {
+      display: grid;
+      gap: 3px;
+    }
+
+    .meta span {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+
+    .meta strong,
+    .meta a {
+      font-weight: 600;
+      color: var(--text);
+      text-decoration: none;
+      line-height: 1.45;
+      word-break: break-word;
+    }
+
+    .meta a:hover {
+      color: var(--primary-strong);
+    }
+
+    .empty {
+      padding: 26px;
+      border-radius: 18px;
+      background: rgba(239, 226, 209, 0.6);
+      color: var(--muted);
+      text-align: center;
+      display: none;
+    }
+
+    @media (max-width: 860px) {
+      .filter-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .results-head {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <div class="eyebrow">Cadastro comercial local</div>
+      <h1>Empresas Parceiras em Itabaiana</h1>
+      <div class="stats">
+        <div class="stat">
+          <strong id="totalCompanies">0</strong>
+          <span>empresas listadas</span>
+        </div>
+        <div class="stat">
+          <strong id="totalBranches">0</strong>
+          <span>ramos identificados</span>
+        </div>
+        <div class="stat">
+          <strong id="visibleCompanies">0</strong>
+          <span>resultados exibidos</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="filters">
+      <div class="filter-grid">
+        <div>
+          <label for="search">Buscar</label>
+          <input id="search" type="search" placeholder="Digite empresa, ramo, contato ou responsavel">
+        </div>
+        <div>
+          <label for="branch">Ramo</label>
+          <select id="branch">
+            <option value="">Todos os ramos</option>
+          </select>
+        </div>
+        <div>
+          <label for="reset">Limpar</label>
+          <button id="reset" type="button">Limpar filtros</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="results">
+      <div class="results-head">
+        <div id="summary">Carregando dados...</div>
+      </div>
+      <div class="empty" id="emptyState">Nenhuma empresa encontrada com os filtros atuais.</div>
+      <div class="cards" id="cards"></div>
+    </section>
+  </main>
+
+  <script>
+    const csvBase64 = `
+O0VNUFJFU0E7Tk9NRSBGQU5UQVNJQTtO2k1FUk8gU9NDSU87Tk9NRSBETyBT00NJTzs7Ozs7OzsNCjs7
+Ozs7Ozs7Ozs7DQo7QUNBREVNSUFTOzs7Ozs7Ozs7Ow0KO1NBVURFICYgRklUTkVTUyBFVk9MVVRJT04g
+TFREQTtTQVVERSAmIEZJVE5FU1MgRVZPTFVUSU9OOzc5OTk4OTU1NDY1O01BUklBIERFIExPVVJERVMg
+U0FOVE9TOzs7Ozs7Ow0KO1NMSU0gRklUIExUREE7U0xJTSBGSVQ7Nzk5ODIzMzc4NztUSElFUlMgRk9O
+U0VDQSBERSBKRVNVUzs7Ozs7OzsNClRPVEFMOzI7Ozs7Ozs7Ozs7DQo7Ozs7Ozs7Ozs7Ow0KO0HHT1VH
+VUVTOzs7Ozs7Ozs7Ow0KO0NBU0EgREEgQ0FSTkUgTkFTQ0lNRU5UTyBMVERBOzs3OTk5NjYzNzUzNjtF
+VkFORFJPIFNBTlRBTkEgLSBDQVNBIERBIENBUk5FIE5BU0NJTUVOVE87Ozs7Ozs7DQpUT1RBTDsxOzs7
+Ozs7Ozs7Ow0KOzs7Ozs7Ozs7OzsNCjtBRFZPQ0FDSUE7Ozs7Ozs7Ozs7DQo7QUxWRVMgU0FOVE9TIEFE
+Vk9HQURPUztBTFZFUyBTQU5UT1MgQURWT0dBRE9TOzc5OTk5NjY1Njc4O0FMRVhBTkRSRSBBTFZFUzs7
+Ozs7OzsNClRPVEFMOzE7Ozs7Ozs7Ozs7DQo7Ozs7Ozs7Ozs7Ow0KO0FTU0lTVMpOQ0lBIERFIFNPTTs7
+Ozs7Ozs7OzsNCjtBVURJTyBTSE9QIEVMRVRST05JQ0EgRSBBQ0VTU09SSU9TIExUREE7QVVESU8gU0hP
+UDs3OTk5MDAyNTUwO0dJTFZBTiAtIMFVRElPIFNIT1A7Ozs7Ozs7DQo7REFOVEFTIFNPTSBBU1NJU1RF
+TkNJQSBURUNOSUNBIExUREE7REFOVEFTIFNPTSBBU1NJU1RFTkNJQSBURUNOSUNBOzc5OTk3NDQwNjA7
+S0FZTyBGRUxJUEUgREFOVEFTIEZFUlJFSVJBOzs7Ozs7Ow0KO0xVSVogQU5UT05JTyBQRVJFSVJBIERB
+IFNJTFZBIDMzMTkyMTk3NTg7RUxFVFJPTklDQSBFIE9GSUNJTkEgVE9UQUsgU09NOzc5OTk4NTY4MzQ1
+O0xVSVogQU5UT05JTyBQRVJFSVJBIERBIFNJTFZBIEZJTEhPOzs7Ozs7Ow0KO01JTFRPTiBTT00gTFRE
+QSBNRTtNSUxUT04gU09NOzc5OTk3NDE2ODc7TUlMVE9OIFNPTTs7Ozs7OzsNClRPVEFMOzQ7Ozs7Ozs7
+Ozs7DQo7Ozs7Ozs7Ozs7Ow0KO0NBTlRPUjs7Ozs7Ozs7OzsNCjtEQU5JRUxaSU5ITyBKUiBMVERBO0RB
+TklFTFpJTkhPIEpSOzc5OTk5NjYzNjA2O0RBTklFTCBK2k5JTyBNQVJUSU5TIERBIFNJTFZBIEFMTUVJ
+REE7Ozs7Ozs7DQpUT1RBTDsxOzs7Ozs7Ozs7Ow0KOzs7Ozs7Ozs7OzsNCjtDQVJQSU5UQVJJQSBFIE1B
+REVJUkVJUkE7Ozs7Ozs7Ozs7DQo7Q0FSUElOVEFSSUEgU0FOVE8gQU5UT05JTyBMVERBIE1FO0NBUlBJ
+TlRBUklBIFNBTlRPIEFOVE9OSU8gTFREQTs3OTk4ODk1MTUwO0FERU1JTFNPTiBBTE1FSURBIFNPVVpB
+Ozs7Ozs7Ow0KO0NPTUVSQ0lPIERFIE1BREVJUkEgUFJFQ08gQk9NIExUREEgTUU7Q09NRVJDSU8gREUg
+TUFERUlSQSBQUkVDTyBCT00gTFREQSAtTUU7Nzk5OTk4NDAzMzc7TUFSQ09TIE1BREVJUkVJUkEgUFJF
+x08gQk9NOzs7Ozs7Ow0KO01BREVJUkVJUkEgUFJFQ08gQk9NIExUREEgRVBQO01BREVJUkVJUkEgUFJF
+Q08gQk9NIExUREE7Nzk5OTk4NDAzMzc7TUFSQ09TIE1BREVJUkVJUkEgUFJFx08gQk9NOzs7Ozs7Ow0K
+VE9UQUw7Mzs7Ozs7Ozs7OzsNCjs7Ozs7Ozs7Ozs7DQo7Q0hPQ09MQVRFOzs7Ozs7Ozs7Ow0KO0VWSUxJ
+TiBDT01FUkNJTyBERSBDSE9DT0xBVEUgTFREQTtTT09WRTs3OTk5OTg1ODI1NztHSUxWQU4gQ0FDQVUg
+U0hPVzs7Ozs7OzsNCjtJVEFTSE9XIENPTUVSQ0lPIERFIENIT0NPTEFURVMgTFREQSBNRTtDQUNBVSBT
+SE9XOzc5ODg1MzAwNTE7U0FORFJBIExFQSBTQU5UQU5BIFNJTFZBIFBFUkVJUkE7Ozs7Ozs7DQpUT1RB
+TDsyOzs7Ozs7Ozs7Ow0KOzs7Ozs7Ozs7OzsNCjtDTM1OSUNBIFZFVEVSSU7BUklBOzs7Ozs7Ozs7Ow0K
+O0NMSU5JQ0EgVkVURVJJTkFSSUEgRElOSVogU0FOVEFOQSBMVERBO1BFVCBWSURBIENMSU5JQ0EgVkVU
+RVJJTkFSSUE7Nzk5ODE4MjI0MjtDWU5USUEgLSBQRVQgVklEQTs7Ozs7OzsNCjtMQUJPVkVUIExUREE7
+TEFCT1ZFVDs3OTk5MTQyMDYxODtDUklTVElBTk8gTFVJUyBCUkFHQSBQQUVTIEJBUlJFVE87Ozs7Ozs7
+DQpUT1RBTDsyOzs7Ozs7Ozs7Ow0KOzs7Ozs7Ozs7OzsNCjtDT05TVFJVVE9SQVM7Ozs7Ozs7Ozs7DQo7
+QVRSSU8gVVJCQU5JWkFET1JBIExUREE7QVRSSU8gVVJCQU5JWkFET1JBIExUREE7Nzk5OTk4NjYyMjg7
+TUlDSEFFTCBET1VHTEFTIE1PUkFFUzs7Ozs7OzsNCjtDSElBUkEgQ09OU1RSVVRPUkEgU1BFIExUREE7
+Q0hJQVJBIENPTlNUUlVUT1JBIFNQRTs3OTk5OTg2NTk0NztFRFNPTiBWSUVJUkEgUEFTU09TOzs7Ozs7
+Ow0KO0VUSE9TICYgQ0hWTCBDT05TVFJVVE9SQSBTUEUgTFREQTtFVEhPUyAmIENIVkwgQ09OU1RSVVRP
+UkEgU1BFIExUREE7Nzk5OTk4NjU5NDc7RURTT04gVklFSVJBIFBBU1NPUzs7Ozs7OzsNCjtFVEhPUyBJ
+TkNPUlBPUkFET1JBIExUREE7RVRIT1MgSU5DT1JQT1JBRE9SQSBMVERBOzc5OTk5ODY1OTQ3O0VEU09O
+IFZJRUlSQSBQQVNTT1M7Ozs7Ozs7DQo7TE9OIENPTlNUUlVUT1JBIFNQRSBMVERBO0xPTiBDT05TVFJV
+VE9SQTs3OTk5OTg2NTk0NztFRFNPTiBWSUVJUkEgUEFTU09TOzs7Ozs7Ow0KO09OSVggSU1PQklMSUFS
+SUEgJiBDT05TVFJVVE9SQSBMVERBOzs3OTk5OTg0NDU5MDtCRUxFTEVVOzs7Ozs7Ow0KO1BBU1NPUyBD
+T05TVFJVVE9SQSBTUEUgTFREQTtQQVNTT1MgQ09OU1RSVVRPUkEgU1BFOzc5OTk5ODY1OTQ3O0VEU09O
+IFZJRUlSQSBQQVNTT1M7Ozs7Ozs7DQo7UkxDIEVNUFJFRU5ESU1FTlRPUyBMVERBOzs3OTk5OTg0NDU5
+MDtCRUxFTEVVOzs7Ozs7Ow0KO1NEUiBFTVBSRUVORElNRU5UT1MgU1BFIExUREE7Ozc5OTk5ODY2MjI4
+O01JQ0hBRUwgRE9VR0xBUyBNT1JBRVM7Ozs7Ozs7DQo7U1VDRVNTTyBDT05TVFJVQ09FUyBMVERBO1NV
+Q0VTU08gQ09OU1RSVUNPRVM7Nzk5OTk4ODQ1OTA7R0VSSU5BTERPIC0gTE9URUFNRU5UTzs7Ozs7OzsN
+CjtWSVZFUiBFTVBSRUVORElNRU5UT1MgTFREQTtWSVZFUiBFTVBSRUVORElNRU5UT1M7Nzk5OTg2NDYz
+MDtMRVRJQ0lBIEIgRSBMOzs7Ozs7Ow0KO0NMRUFORSBTQU5UT1MgUkVaRU5ERSBMVERBO0NFTlRSTyBN
+RURJQ08gRSBFTVBSRVNBUklBTCBMSU5DT0xOOzc5OTk5NTc4MzYzO0NMRUFORSBTQU5UT1MgUkVaRU5E
+RTs7Ozs7OzsNCjtSIEUgUiBTRVJWSUNPUyBMVERBO1IgJiBSIENPTkRPTUlOSU9TOzc5OTk5ODQyNTUz
+O1JBRkFFTCAtIENJUzs7Ozs7OzsNCjtQQVNTT1MgSlVOSU9SIENPTlNUUlVUT1JBIExUREE7UEFTU09T
+IEpVTklPUiBDT05TVFJVVE9SQTs3OTk5Njc1NjYxNjtFRFNPTiBK2k5JT1I7Ozs7Ozs7DQo7UyAmIFMg
+RU1QUkVFTkRJTUVOVE8gTFREQTs7Nzk5OTMxOTY1NjtTQU1VRUwgUyAmIFM7Ozs7Ozs7DQpUT1RBTDsx
+NTs7Ozs7Ozs7OzsNCjs7Ozs7Ozs7Ozs7DQo7Q09SUkVUT1JBUyBFIFNFR1VST1M7Ozs7Ozs7Ozs7DQo7
+QS4gQUxWRVMgQ09SUkVUT1JBIERFIFNFR1VST1MgTFREQTs7Nzk5OTg0NjY0MDQ7QURSSUFOQSAtIEEg
+QUxWRVMgQ09SUkVUT1JBOzs7Ozs7Ow0KO0RFU1RSQVZBIElOVEVMSUdFTkNJQSBJTU9CSUxJQVJJQSAm
+IEZJTkE7Ozc5OTk5ODY1OTQ3O0VEU09OIFZJRUlSQSBQQVNTT1M7Ozs7Ozs7DQo7SU1PVkVJUyBTRVJH
+SVBFIExUREE7Rk9DTyBTRVJWSUNPUyBMVERBOzc5OTk5NzAwNTE5O0FMWVNTT04gRkVSUkVJUkEgTElN
+QTs7Ozs7OzsNCjtJVEFDT04gTFREQTtJVEFDT047Nzk5OTk3ODM4Mzk7Q0FSTE9TIEhFTlJJUVVFIC0g
+SVRBQ09OOzs7Ozs7Ow0KO0NISUFSQSBNQUxMIFNQRSBMVERBOzs3OTk5OTg2NTk0NztFRFNPTiBWSUVJ
+UkEgUEFTU09TOzs7Ozs7Ow0KVE9UQUw7NTs7Ozs7Ozs7OzsNCjs7Ozs7Ozs7Ozs7DQo7RURVQ0HHw087
+Ozs7Ozs7Ozs7DQo7Q09MRUdJTyBPIFNBQkVSIExUREE7Q09MRUdJTyBPIFNBQkVSOzc5OTk5MjAzOTEz
+O0VWRVJUT047Ozs7Ozs7DQpUT1RBTDsxOzs7Ozs7Ozs7Ow0KOzs7Ozs7Ozs7OzsNCjtFTkVSR0lBIFNP
+TEFSOzs7Ozs7Ozs7Ow0KO1JVVEggVklFSVJBIExFSVRFIENVTkhBIExUREE7SU5PVkFSIFNPTEFSOzc5
+OTgzNzQxODE7UlVUSCBWSUVJUkEgTEVJVEUgQ1VOSEE7Ozs7Ozs7DQpUT1RBTDsxOzs7Ozs7Ozs7Ow0K
+Ozs7Ozs7Ozs7OzsNCjtFU1BPUlRFUzs7Ozs7Ozs7OzsNCjtBU1NPQ0lBQ0FPIERBTklFTCBTQU4gREUg
+S0FSQVRFOzs3OTk5OTc0MDMzNTtEQU5JRUwgR09NRVMgREEgU0lMVkEgOzs7Ozs7Ow0KO05VTkVTICYg
+TUVMTyBMVERBIE1FO1ZJVkEgRVNQT1JUUzs3OTk5NjMyODY4O0xVSVpJTkhPOzs7Ozs7Ow0KO09MSVZF
+SVJBIEUgTUVMTyBMVERBO0NPTUVSQ0lBTCBTQU5UTyBBTkRSRTs3OTk5NzUwMDQ0O05FVE8gUFJPIFNQ
+T1JUOzs7Ozs7Ow0KO1RSRU5aSU5ITyBBUkNPIElSSVMgTFREQTtUUkVOWklOSE8gQVJDTyBJUklTOzc5
+OTkwNTkwOTg7QURSSUFOTyBWSUVJUkEgUkVaRU5ERTs7Ozs7OzsNCjtQUk8gU1BPUlQgQVJUSUdPUyBF
+U1BPUlRJVk9TIExUREE7Ozc5OTk3NTAwNDQ7TkVUTyBQUk8gU1BPUlQ7Ozs7Ozs7DQpUT1RBTDs1Ozs7
+Ozs7Ozs7Ow0KOzs7Ozs7Ozs7OzsNCjtFU1FVQURSSUEgREUgRkVSUk87Ozs7Ozs7Ozs7DQo7RVNRVUFE
+UklBIERFIEZFUlJPIE5PU1NBIFNFTkhPUkEgREEgUEFaO0VTUVVBRFJJQSBERSBGRVJSTyBOT1NTQSBT
+RU5IT1JBIERBIFBBWjs3OTk5OTY5NzMwMjtFRE1JTFNPTiBFU1FVQURSSUEgTi4gU1JBIERBIFBBWjs7
+Ozs7OzsNClRPVEFMOzE7Ozs7Ozs7Ozs7DQo7Ozs7Ozs7Ozs7Ow0KO0ZJTkFOx0FTOzs7Ozs7Ozs7Ow0K
+O0dJUlVCQU5LIFMuQS47R0lSVUJBTks7Nzk5OTk4NjU5NDc7RURTT04gVklFSVJBIFBBU1NPUzs7Ozs7
+OzsNClRPVEFMOzE7Ozs7Ozs7Ozs7DQo7Ozs7Ozs7Ozs7Ow0KO0ZJU0lPVEVSQVBJQTs7Ozs7Ozs7OzsN
+CjtGSVNJTyBUQUtBR0kgTFREQTtDTElOSUNBIFRBS0FHSTs3OTk5ODg4MjA1MDtTQU1BUkEgVEFLQUdJ
+Ozs7Ozs7Ow0KO1NJTFZJQSBUQVRJQU5ZIEFORFJBREUgUE9SVE87VEEgQ09OU1VMVE9SSUEgQUxJTUVO
+VEFSOzc5OTgxMDU0MjcxO1NJTFZJQSBUQVRJQU5ZIEFORFJBREUgUE9SVE87Ozs7Ozs7DQpUT1RBTDsy
+Ozs7Ozs7Ozs7Ow0KOzs7Ozs7Ozs7OzsNCjtGT1RPR1JBRklBIEUgRklMTUFHRU07Ozs7Ozs7Ozs7DQo7
+NjMuNzYyLjYxNSBHQUJSSUVMRSBERSBDQVJWQUxITyBNQUNIQURPO0ZPQ0FSIEFPIEFMVE87OTk5NTIt
+MzUzMjtHQUJJOzs7Ozs7Ow0KO0FSSU1BVEVBIEZPVE9HUkFGSUEgTFREQTtBUklNQVRFQSBGT1RPR1JB
+RklBOzc5OTk5NzYzNDYwO0xVQU5BIEFSSU1BVEVBOzs7Ozs7Ow0KO0xBQk9SQVRPUklPIEZPVE9HUkFG
+SUNPIE1FSVJFTEVTIExUREEgTUU7Rk9UTyBNRUlSRUxFUzs3OTk5NjM5MDk5OTtFRE5BTERPIExJTUE7
+Ozs7Ozs7DQpUT1RBTDszOzs7Ozs7Ozs7Ow0KOzs7Ozs7Ozs7OzsNCjtHUkFWQcfDTyBFIEVEScfDTyBE
+RSBWzURFTzs7Ozs7Ozs7OzsNCjtDQUpVRUlSTyBQVUJMSUNJREFERSBMVERBO0NBSlVFSVJPIFBVQkxJ
+Q0lEQURFIExUREE7Nzk5OTk2NzA5NTM7Sk9TRSBNRU5ET07HQSBEQSBUUklOREFERTs7Ozs7OzsNClRP
+VEFMOzE7Ozs7Ozs7Ozs7DQo7Ozs7Ozs7Ozs7Ow0KO0hPVMlJUy8gTdNURUlTOzs7Ozs7Ozs7Ow0KO1BP
+VVNBREEgQ0VOVFJBTCBMVERBO1BPVVNBREEgQ0VOVFJBTDs3OTk5NzQxMzM1O01BUklBIERFIExPVVJE
+RVMgTU9UQSBDQVJWQUxITzs7Ozs7OzsNCjtBIE4gViBFTVBSRUVORElNRU5UT1MgTFREQTtMT1VOR0Ug
+TU9URUw7Nzk5OTY1NTU3Mzc7TElORElORVRFIE5FVkVTIENVTkhBOzs7Ozs7Ow0KVE9UQUw7Mjs7Ozs7
+Ozs7OzsNCjs7Ozs7Ozs7Ozs7DQo7SU5TVEFMQcfDTyBFTMlUUklDQTs7Ozs7Ozs7OzsNCjtDTE9WSVMg
+TUFDSEFETyAxMTk1NDc3NTg5MDs7Nzk5OTk4NDAwOTg7Q0zTVklTIE1FSTs7Ozs7OzsNClRPVEFMOzE7
+Ozs7Ozs7Ozs7DQo7Ozs7Ozs7Ozs7Ow0KO0xBTkNIT05FVEVTIEUgUkVTVEFVUkFOVEVTOzs7Ozs7Ozs7
+Ow0KO0lUQU1JUkVTIFNBTlRBTkEgTElNQSBNRTtDQVJORSBBU1NBREEgRE8gRE9NSUNJTzs3OTk5Mzkx
+Mjk4O0lUQU1JUkVTIFNBTlRBTkEgTElNQTs7Ozs7OzsNCjtKRVJGRkVTT04gRkVSUkVJUkEgREUgTElN
+QSA5OTg5NDM3ODU4NztRVUlPU1FVRSBFIExBTkNIT05FVEUgU0FOVEEgTU9OSUNBOzc5OTk5MjM0OTg1
+O0tBVElBTkUgLSBFU1BPU0EgREUgSkVGRVJTT04gUVVJT1NRVUUgU0FOVEEgTdROSUNBOzs7Ozs7Ow0K
+O0VWSUxZTiBTSUxWQSBQRVJFSVJBO1NPT1ZFOzc5ODg1MzAwNTE7U0FORFJBIExFQSBTQU5UQU5BIFNJ
+TFZBIFBFUkVJUkE7Ozs7Ozs7DQo7R0VUVUxJTyBJU0lESU8gRE9TIFNBTlRPUzs7Nzk5OTgzNTM0Njc7
+R0VUVUxJTyBJU0lESU87Ozs7Ozs7DQo7TUFSQUpBIExBTkNIRVMgTFREQSBNRTtNQVJBSkEgTEFOQ0hF
+UyBMVERBOzc5OTk5ODgzODE5O01BUkNPUyBQQVVMTyBNRU5FWkVTIEdPSVM7Ozs7Ozs7DQo7SUxIQSBJ
+VEFCQUlBTkEgTFREQTs7Nzk5OTk5NjkwMzE7V0VTTEVZIC0gSUxIQTs7Ozs7OzsNClRPVEFMOzY7Ozs7
+Ozs7Ozs7DQo7Ozs7Ozs7Ozs7Ow0KO0xPSkEgREUgSU5TVFJVTUVOVE9TIE1VU0lDQUlTOzs7Ozs7Ozs7
+Ow0KO1BFUFkgTVVTSUMgSU5TVFJVTUVOVE9TIE1VU0lDQUlTIExUREE7Ozc5OTExMTY2MDM7QU5ERVJT
+T04gQkFSQk9TQSBERSBPTElWRUlSQTs7Ozs7OzsNClRPVEFMOzE7Ozs7Ozs7Ozs7DQo7Ozs7Ozs7Ozs7
+Ow0KO0xPSkFTIERFIFJPVVBBOzs7Ozs7Ozs7Ow0KO0EgSkFQT05FU0lOSEEgQ09ORkVDQ09FUyBMVERB
+Ozs3OTk2NzcxMDU4O1NBTkRZIERPUyBTQU5UT1MgVEFLQUdJOzs7Ozs7Ow0KO0FDVUNFTkEgUklPIENP
+TUVSQ0lPIERFIENPTkZFQ0NPRVMgTFREQTs7Nzk5OTkzMTIwMDg7UkFGQUVMQSBBQ1VDRU5BOzs7Ozs7
+Ow0KO0FOIENPTUVSQ0lPIFZBUkVKSVNUQSBERSBST1VQQVMgTFREQTtBTEdPREFPIERPQ0U7Nzk5OTk2
+MjY5MjU7TkFZQU5FIENPTkZJUk1BUiBTRSDJIEVTUE9TQSBETyBET05POzs7Ozs7Ow0KO0JJTExZIEpF
+QU5TO0JJTExZIEpFQU5TOzc5OTk5MDYwMDY0O1JBRkFFTEE7Ozs7Ozs7DQo7SEFCU09MVVRBIEJBQlkg
+TFREQTtIQUJTT0xVVEEgQkFCWSBMVERBOzc5OTk5NTc3MzI1O0tBVElBTkUgU0FOVE9TIFRFTEVTIENP
+U1RBOzs7Ozs7Ow0KO01BQ1QgQ09ORkVDQ09FUyBMVERBO0FSWkVNOzc5OTk5NTgxMjQ5O1JPTUVSSVRP
+Ozs7Ozs7Ow0KO01JTkkgQkFCWSBNT0RBIEJFQkUgTFREQTs7Nzk5OTk3NDA1Njc7SlVTU0FSQSBNT1JB
+SVMgT0xJVkVJUkE7Ozs7Ozs7DQo7TU9EQSBGSVRORVNTIExUREE7TU9EQSBGSVRORVNTOzc5OTk4OTU1
+NDY1O01BUklBIERFIExPVVJERVMgU0FOVE9TOzs7Ozs7Ow0KO05BWUFORSBQRVJFSVJBIExJTUEgU0FO
+VE9TIExUREE7QUxHT0TDTyBET0NFOzc5OTk5NjI2OTI1O05BWUFORTs7Ozs7OzsNCjtTQU5EWSBUQUtB
+R0kgTFREQTtBIEpBUE9ORVNJTkhBOzc5OTY3NzEwNTg7U0FORFkgRE9TIFNBTlRPUyBUQUtBR0k7Ozs7
+Ozs7DQo7VklFSVJBICYgQ0FSVkFMSE8gTElOR0VSSUUgTFREQTtNQVJCRUxMRSBMSU5HRVJJRTs3OTk5
+Njg1OTUxNjtTQVJBSCBERSBGUkVJVEFTIE1PTlRFSVJPIEdSQUJIRVI7Ozs7Ozs7DQo7V09STEQgQkFC
+WSBNT0RBIElORkFOVElMIExUREEgTUU7V09STEQgQkFCWSBNT0RBIElORkFOVElMIExUREE7Nzk5OTc4
+NTU4MDtFRElMRU5FIFdPUkxEIEJBQlk7Ozs7Ozs7DQpUT1RBTDsxMjs7Ozs7Ozs7OzsNCjs7Ozs7Ozs7
+Ozs7DQo7TE9KQVMgREUgQ0FMx0FET1M7Ozs7Ozs7Ozs7DQo7Q09NRVJDSUFMIERFIENBTENBRE9TIElU
+QUJBSUFOQSBMVERBO0EgSURFQUwgQ0FMQ0FET1M7Nzk5OTk4NDA1MDU7RURJIENBUkxPUyBTVVBFUk1P
+REFTOzs7Ozs7Ow0KO1NBTlRPIEFOVE9OSU8gRU1QUkVFTkRJTUVOVE9TIExUREE7TVAgU0hPRVM7Nzk5
+OTkzMTI3NTU7VMJOSUEgRVNQT1NBIERFIEpPU0lBUzs7Ozs7OzsNClRPVEFMOzI7Ozs7Ozs7Ozs7DQo7
+Ozs7Ozs7Ozs7Ow0KO0xPSkFTIERFIEVMRVRS1E5JQ09TIEUgQVNTSVNUyk5DSUE7Ozs7Ozs7Ozs7DQo7
+RElHSVRBTEwgQ09NVU5JQ0FDT0VTIExUREEgTUU7RElHSVRBTEwgQ09NVU5JQ0FDT0VTIExUREEgTUU7
+Nzk5OTk4NDA4ODA7TEVUzUNJQSBESUdJVEFMTCBDT01VTklDQcfVRVM7Ozs7Ozs7DQo7RUxJVEVMIENP
+TVVOSUNBQ09FUyBMVERBO0RJR0lUQUwgUFJFU0VOVEVTOzc5OTk5NzQwODgwO0hFTEVOQUxETyBESUdJ
+VEFMOzs7Ozs7Ow0KO1ZJTklYIExUREE7VklOSVggTFREQTs3OTk5NjkyMzY5MztWSU5OSUNJVVMgVklO
+SVg7Ozs7Ozs7DQo7VklUT1IgSU1QT1JUUyBMVERBO1ZJVE9SIElNUE9SVFM7Nzk5OTk2NzgxMzc7VklU
+T1IgSU1QT1JUUzs7Ozs7OzsNClRPVEFMOzQ7Ozs7Ozs7Ozs7DQo7Ozs7Ozs7Ozs7Ow0KO0xPSkFTIERF
+IFBORVVTOzs7Ozs7Ozs7Ow0KO0FERUxTT04gREUgU09VWkEgREFOVEFTOzs3OTk5OTkzODg5OTtDUklT
+VElBTkUgQURFTFNPTjs7Ozs7OzsNCjtSRU5PVkFET1JBIERFIFBORVVTIExJTkNPTE4gTFREQTs7Nzk5
+OTk1NzgzNjM7Q0xFQU5FIFNBTlRPUyBSRVpFTkRFOzs7Ozs7Ow0KVE9UQUw7Mjs7Ozs7Ozs7OzsNCjs7
+Ozs7Ozs7Ozs7DQo7TE9KQVMgREUgUkHH1UVTOzs7Ozs7Ozs7Ow0KO1JBQ09FUyBJREVBTCBMVERBO1JB
+Q09FUyBJREVBTDs3OTk5OTQ0MzQzNztNRU5BTkRTT04gU09VWkEgREUgSkVTVVM7Ozs7Ozs7DQpUT1RB
+TDsxOzs7Ozs7Ozs7Ow0KOzs7Ozs7Ozs7OzsNCjtMT0pBUyBERSBUSU5UQVM7Ozs7Ozs7Ozs7DQo7TklO
+SE8gVElOVEFTIExUREE7TklOSE8gVElOVEFTOzc5OTk5OTE5MTk1O0pPU8kgT0xJVkVJUkEgTlVORVM7
+Ozs7Ozs7DQpUT1RBTDsxOzs7Ozs7Ozs7Ow0KOzs7Ozs7Ozs7OzsNCjtMT0pBUyBFIFJFUEFSQcfDTyBE
+RSBK00lBUzs7Ozs7Ozs7OzsNCjtCRUxMQSBSRVBBUkFDQU8gREUgSk9JQVMgTFREQTs7Nzk5OTYzMDcy
+NjtNQVlBUkEgLSBCRUxMQSBSRVBBUkHH1UVTOzs7Ozs7Ow0KO0xJREVSIFNFTUkgSk9JQVMgTFREQTs7
+Nzk5OTkyMTUzMTk7TUFSQSAtIEzNREVSIFNFTUkgStNJQVM7Ozs7Ozs7DQo7U0FPIE1JR1VFTCBSRVBB
+UkFDQU8gREUgSk9JQVMgTFREQTs7Nzk5OTk0NzE5MTA7TUFSSUEgRsFUSU1BOzs7Ozs7Ow0KO1RVUlFV
+RVNBIFJFUEFSQUNBTyBERSBKT0lBUyBMVERBIC0gTUU7Ozc5OTk5Njk3MTgyO1ZBTERFTklSIFRVUlFV
+RVNBOzs7Ozs7Ow0KO0tFTklBIEpPSUFTIEUgVFJBTlNQT1JURVMgTFREQTtLRU5JQSBKT0lBUzs3OTk5
+OTUwNDk4NTtLRU5JQSBDQVNUUk8gRE9TIFNBTlRPUzs7Ozs7OzsNClRPVEFMOzU7Ozs7Ozs7Ozs7DQo7
+Ozs7Ozs7Ozs7Ow0KO03JRElDT1MgRSBDTM1OSUNBUzs7Ozs7Ozs7OzsNCjtBREVOSUxaQSBTSUxWQSBE
+RSBNRU5ET05DQSBTQU5UT1MgTFREQTs7Nzk5OTkyNDQ3NzU7QUxZU1NPTiAtIEFERU5JTFpBIFNJTFZB
+Ozs7Ozs7Ow0KO0FORFJFQSBDQU1JTExBIE1FRFBFRCBNRUQuIFBFRElBVFJJQSBMVEQ7QU5EUkVBIENB
+TUlMTEEgTUVEUEVEIE1FRElDQSBQRURJQVRSSUEgTFREQTs3OTk5ODE2NjY2NTtBTkRSRUEgQ0FNSUxM
+QSBMSU1BIFNBTlRPUzs7Ozs7OzsNCjtDRU5UUk8gTUVESUNPIENISUFSQSBMVERBO0NFTlRSTyBNRURJ
+Q08gQ0hJQVJBIExUREE7Nzk5OTg0NzY2NjQ7Sk9TySBWSUNUT1IgLSBDRU5UUk8gTclESUNPIENISUFS
+QTs7Ozs7OzsNCjtDTElOSUNBIERBIERJVklOQSBNSVNFUklDT1JESUEgTFREQTtDTElOSUNBIERBIERJ
+VklOQSBNSVNFUklDT1JESUE7Nzk5OTk4NzQwMTQ7QU5EUkVBOzs7Ozs7Ow0KO09MSVZFSVJBICYgTUVM
+TyBVUk9MT0dJQSBBVkFOQ0FEQSBMVERBOzs3OTk5NjkxNTI2O0FORFJFIC0gRklMSE8gREUgTkVUTyBE
+QSBQUk8gU1BPUlQ7Ozs7Ozs7DQo7UEVEUk8gVklUT1IgQU5EUkFERSBMVERBO01FRFNFRzs3OTk4NDgz
+MjQ3O1BFRFJPIC0gTUVEU0VHOzs7Ozs7Ow0KO0lOU1RJVFVUTyBPRlRBTE1PTE9HSUNPIERFIFNFUkdJ
+UEUgTFREQTs7Nzk5OTk3MzEzNTE7RkVSTkFOREEgLSBJT1NFIDs7Ozs7OzsNClRPVEFMOzc7Ozs7Ozs7
+Ozs7DQo7Ozs7Ozs7Ozs7Ow0KO03TVkVJUzs7Ozs7Ozs7OzsNCjtET00gTU9WRUlTIFBMQU5FSkFET1Mg
+TFREQTs7Nzk5OTk0MjY2ODk7Q0FSTE9TIERJRUdPIC0gRE9NIE3TVkVJUzs7Ozs7OzsNCjtHUlVQTyBT
+RVZBTiBNT1ZFSVMgRSBTRVJWSUNPUyBMVERBO1RPUCBMSU5FOzc5OTk5NDkwODAwO1PJUkdJTyBBTFZF
+UyBET1MgU0FOVE9TOzs7Ozs7Ow0KVE9UQUw7Mjs7Ozs7Ozs7OzsNCjs7Ozs7Ozs7Ozs7DQo7T0RPTlRP
+TE9HSUE7Ozs7Ozs7Ozs7DQo7U09BUkVTIENVTkhBIENMSU5JQ0FMIENFTlRFUiBMVERBO1MuQy4gQ0xJ
+TklDQUwgQ0VOVEVSOzc5OTk5OTMxMjcwO1JBRkFFTCBTT0FSRVMgREEgQ1VOSEEgOzs7Ozs7Ow0KO1RK
+IFJBRElPTE9HSUEgTFREQTtTT1JSSU1BR0VNIFJBRElPTE9HSUEgT0RPTlRPTE9HSUNBOzc5OTk5OTk2
+NDcyO1RISUFHTyBSQU1PUyBBTkRSQURFOzs7Ozs7Ow0KO1ZJVEFMREVOVEUgQ0xJTklDQSBPRE9OVE9M
+T0dJQ0EgTFREQTtWSVRBTERFTlRFIENMSU5JQ0EgT0RPTlRPTE9HSUNBOzc5OTk2MDg2MDUyO0dJQU5O
+WSBDQVJWQUxITyBERSBTT1VaQTs7Ozs7OzsNClRPVEFMOzM7Ozs7Ozs7Ozs7DQo7Ozs7Ozs7Ozs7Ow0K
+O9NUSUNBUzs7Ozs7Ozs7OzsNCjtJU1JBRUwgTElNQSBET1MgU0FOVE9TIE1FO09USUNBIEVYQVRBOzc5
+OTk5NzQyNzkwO0lTUkFFTCDTVElDQSBFWEFUQTs7Ozs7OzsNCjtMVUNJQU5BIERBIFNJTFZBIE9MSVZF
+SVJBIDAxMjc1OTM3NTYwO01PREEgT0NVTE9TOzc5OTk5MTA3NjU0O0xVQ0lBTkEgTU9EQSDTQ1VMT1M7
+Ozs7Ozs7DQo7T1RJQ0EgQU5EUkFERSBMVERBOzs3OTk5ODA3NTUwMztXQU5DTEVZREVTIEFORFJBREUg
+QkFUSVNUQTs7Ozs7OzsNCjtPVElDQSBMSURFUiBMVERBIE1FO09USUNBIElUQUxJQU5BOzc5OTk5NzQy
+NzkwO0lTUkFFTCDTVElDQSBFWEFUQTs7Ozs7OzsNCjtPVElDQSBWSUREQSBMVERBO09USUNBIFZJRERB
+Ozc5OTk4MDc1NTAzO1dBTkNMRVlERVMgQU5EUkFERSBCQVRJU1RBOzs7Ozs7Ow0KVE9UQUw7NTs7Ozs7
+Ozs7OzsNCjs7Ozs7Ozs7Ozs7DQo7UEFEQVJJQTs7Ozs7Ozs7OzsNCjtFRElWQUxETyBTQU5UT1MgREUg
+UkVaRU5ERSBNRTtFRElWQUxETyBTQU5UT1MgREUgUkVaRU5ERSBNRTs3OTk5OTI0NDI2MDtFRElWQUxE
+TyBTQU5UT1MgREUgUkVaRU5ERTs7Ozs7OzsNCjtQQU5JRklDQUNBTyBFIE1FUkNFQVJJQSBTQU5UQSBM
+VVpJQSBMVERBO1BBTklGSUNBQ0FPIEUgTUVSQ0VBUklBIFNBTlRBIExVWklBIExUREE7Nzk5OTY1NTU3
+Mzc7TElORElORVRFIE5FVkVTIENVTkhBOzs7Ozs7Ow0KO1BBTklGSUNBQ0FPIEUgU1VQRVJNRVJDQURP
+IE1JTEVOWSBMVERBO1BBTklGSUNBQ0FPIEUgU1VQRVJNRVJDQURPIE1JTEVOWSBMVERBIE1FOzc5OTk3
+OTMwNzY7SkFJTFNPTiBQQU4uIE1JTEVOWTs7Ozs7OzsNCjtTSUxWSU8gU0FOVE9TIE9MSVZFSVJBIElU
+QUJBSUFOQSBNRTtQQU5JRklDQUNBTyBFIE1FUkNFQVJJQSBKIEw7Nzk5OTkxNTYzMzI7U0lMVklPIFNB
+TlRPUyBPTElWRUlSQSBJVEFCQUlBTkE7Ozs7Ozs7DQo7NTIuMzg5LjIyNyBNQVlBUkEgRE8gUFJBRE8g
+TlVORVM7NTIuMzg5LjIyNyBNQVlBUkEgRE8gUFJBRE8gTlVORVM7Nzk5OTg5OTg1MDU7TUFZQVJBIFBS
+QURPIE1FSTs7Ozs7OzsNClRPVEFMOzU7Ozs7Ozs7Ozs7DQo7Ozs7Ozs7Ozs7Ow0KO1BBUEVMQVJJQTs7
+Ozs7Ozs7OzsNCjtMSVZSQVJJQSBFIFBBUEVMQVJJQSBHUkFGSVRFIExUREE7UEFQRUxBUklBIEdSQUZJ
+VEU7Nzk5OTk1NzM4NTI7VkFMREVDSSBTQU5UT1MgREUgR09JUyBTSUxWQTs7Ozs7OzsNClRPVEFMOzE7
+Ozs7Ozs7Ozs7DQo7Ozs7Ozs7Ozs7Ow0KO1BFSVhBUklBOzs7Ozs7Ozs7Ow0KO0pNIFBFU0NBRE9TIExU
+REE7Ozc5OTk2NDA0NTI4O01JQ0hFTEUgU0FOVE9TIFRFTEVTOzs7Ozs7Ow0KVE9UQUw7MTs7Ozs7Ozs7
+OzsNCjs7Ozs7Ozs7Ozs7DQo7UEVSRlVNQVJJQTs7Ozs7Ozs7OzsNCjtHLlQuIENPTUVSQ0lPIERFIFBS
+T0RVVE9TIElNUE9SVEFET1MgTFREO1JPWUFMVFkgQ0FMx0FET1M7Nzk5OTAwMDYwNjtHRU5JTFNPTiBQ
+QUVTIERPUyBTQU5UT1M7Ozs7Ozs7DQo7TyBCT1RJQ8FSSU87TyBCT1RJQ8FSSU87Nzk5OTkzMjUwNzA7
+R0lMRUlERTs7Ozs7OzsNClRPVEFMOzI7Ozs7Ozs7Ozs7DQo7Ozs7Ozs7Ozs7Ow0KO1BMQU5UQVMgRSBK
+QVJESU07Ozs7Ozs7Ozs7DQo7Q0FSRU4gQUxCRVJUQSBDQVJWQUxITyBET1MgU0FOVE9TIExUREE7U0hP
+UFBJTkcgR0FSREVOIERBUyBQTEFOVEFTOzc5OTk4NDM0NjE0O0NBUkVOIEFMQkVSVEEgQ0FSUlZBTEhP
+IERPUyBTQU5UT1M7Ozs7Ozs7DQpUT1RBTDsxOzs7Ozs7Ozs7Ow0KOzs7Ozs7Ozs7OzsNCjtTQUzDTyBF
+IEJBUkJFQVJJQTs7Ozs7Ozs7OzsNCjtEQU5UQVMgRSBTRU5BIENFTlRSTyBERSBCRUxFWkEgTFREQTtB
+Tk5FIE1BUklFICYgQUpVIEJBUkJFUjs3OTk5ODk0MDg2NjtHRU5JVkFMRE8gRE9TIFNBTlRPUzs7Ozs7
+OzsNCjtQRVJMQSBCRUxFWkEgRSBCRU0gRVNUQVIgTFREQTtQRVJMQSBCRUxFWkEgRSBCRU0gRVNUQVI7
+Nzk5OTk1OTI4ODY7UEVSTEEgUEFTU09TIERFIENBUlZBTEhPOzs7Ozs7Ow0KO1RJQUdPIENBUlZBTEhP
+IFNJTFZBIEVMRU9ET1JPIDAwNTg3ODE0NTU7QkFSQkVSIENMVUI7Nzk5OTg4Mzc4NDQ7VElBR08gQ0FS
+VkFMSE8gU0lMVkEgRUxFT0RPUk87Ozs7Ozs7DQpUT1RBTDszOzs7Ozs7Ozs7Ow0KOzs7Ozs7Ozs7OzsN
+CjtTRUdVUkFOx0EgRE8gVFJBQkFMSE87Ozs7Ozs7Ozs7DQo7U0FGRSBTRUdVUkFOQ0EgRE8gVFJBQkFM
+SE8gTFREQTtTQUZFIFNFR1VSQU5DQSBETyBUUkFCQUxITyBMVERBOzc5OTk4NjE4Mjg0O1BBVUxPIFZJ
+Q1RPUiBTQU5UT1MgT0xJVkVJUkE7Ozs7Ozs7DQpUT1RBTDsxOzs7Ozs7Ozs7Ow0KOzs7Ozs7Ozs7OzsN
+CjtTRVJWScdPUyBERSBFTkdFTkhBUklBOzs7Ozs7Ozs7Ow0KO1ZMIEVOR0VOSEFSSUEgTFREQTtWTCBF
+TkdFTkhBUklBIExUREE7Nzk5OTk0OTA3NTc7TFVBTkEgT0xJVkVJUkEgQ1VOSEEgQklTUE87Ozs7Ozs7
+DQpUT1RBTDsxOzs7Ozs7Ozs7Ow0KOzs7Ozs7Ozs7OzsNCjtTRVJWScdPUyBFIExPSkFTIEFVVE9NT1RJ
+Vk9TOzs7Ozs7Ozs7Ow0KO0FERUxTT04gQUxWRVMgUk9EUklHVUVTO0FERUxTT04gQUxWRVMgUk9EUklH
+VUVTOzc5OTk5OTg1NDY2O0FERUxTT04gQUxWRVMgUk9EUklHVUVTOzs7Ozs7Ow0KO0pPRUxJVE9OIERB
+IENSVVogTUU7Sk9FTElUT04gREEgQ1JVWjs3OTM0MzEyNDY2O0pPRUxJVE9OIERBIENSVVo7Ozs7Ozs7
+DQo7UEFTU09TIENPTUVSQ0lPIERFIFBFQ0FTIFBBUkEgVkVJQ1VMT1MgQTs7Nzk5OTk3NDY5NzI7RkFC
+SUFOTyAtIFRPTlkgUEFTU09TOzs7Ozs7Ow0KO1RFTEVTIEUgQ09TVEEgUEVDQVMgRSBBQ0VTU09SSU9T
+IExUREEgTUU7Ozc5OTk5NTY3MzQ0O1ZJVklBTkUgVEVMRVMgQ09TVEEgTUVMTzs7Ozs7OzsNCjtUUlVD
+S1MgUEFEUkUgQ0lDRVJPIExUREE7SVRBTUEgVFJVQ0tTOzc5OTY4MzQzNzk7SVRBTUFSIE9MSVZFSVJB
+IDs7Ozs7OzsNCjtDRU5UUk8gREUgU0VSVklDT1MgTUVDQU5JQ09TIEFSQVVKTyBMVERBO0NFTlRSTyBE
+RSBTRVJWSUNPUyBBUkFVSk87Nzk5OTk2OTI4OTU7RURJTklMU09OIEFSQdpKTzs7Ozs7OzsNCjtNT1RP
+IENJQ0xPIElERUFMIExUREE7TU9UTyBDSUNMTyBJREVBTDs3OTk5ODc5MTMzMDtUT05ITyBNRUxPOzs7
+Ozs7Ow0KVE9UQUw7Nzs7Ozs7Ozs7OzsNCjs7Ozs7Ozs7Ozs7DQo7U1VQRVJNRVJDQURPUzs7Ozs7Ozs7
+OzsNCjtDT01FUkNJQUwgREUgUFJPRFVUT1MgQUxJTUVOVM1DSU9TIE5PU1NPIEFNSUdPO0NPTUVSQ0lB
+TCBERSBQUk9EVVRPUyBBTElNRU5UzUNJT1MgTk9TU08gQU1JR087Nzk5OTk4ODk0MjE7TFVDSUFOTyAt
+IE5PU1NPIEFNSUdPOzs7Ozs7Ow0KO0RJU1RSSUJVSURPUkEgRSBNRVJDRUFSSUEgQ0FST0xJTkUgUkVa
+RU5ERTtESVNUUklCVUlET1JBIEUgTUVSQ0VBUklBIENBUk9MSU5FIFJFWkVOREU7Nzk5OTYzNTY3Mzg7
+TFVDSUFOTyBTQU5UT1MgREUgUkVaRU5ERTs7Ozs7OzsNCjtKUiBBVEFDQURJU1RBIERFIFBST0RVVE9T
+IEFMSU1FTlRJQ0lPUyBMO0pSIEFUQUNBUkVKTzs3OTk5ODQxMTExO0pVTklPUiAtIEpSIEFUQUNBRElT
+VEE7Ozs7Ozs7DQo7TUVSQ0FESU5ITyBKVUxJTyBSRVpFTkRFIExUREE7Ozc5OTk5MjQ0MjYwO0VESVZB
+TERPIFNBTlRPUyBSRVpFTkRFOzs7Ozs7Ow0KO05PU1NBIEhPUlRJRlJVVEkgTUlOSSBNRVJDQURPIExU
+REE7Tk9TU0EgSE9SVElGUlVUSSBNSU5JIE1FUkNBRE87Nzk5OTA1MzM3OTtGQUJJQU5BIE5PU1NBIEhP
+UlRJIEZSVVRJOzs7Ozs7Ow0KO05VVFJJIFDDTztOVVRSSSBQw087Nzk5OTk2Mzc3ODY7SkFOSVNTT04g
+VEVMRVMgREUgR09JUzs7Ozs7OzsNCjtDT01FUkNJQUwgREUgQUxJTUVOVE9TIEogRSBUIExUREE7Q09N
+RVJDSUFMIEtJIFBSRUNPOzc5OTk5NzQ1ODQzO0pPU0lWQUxETyAtIENPTSBKICYgVCA7Ozs7Ozs7DQo7
+UEFOSUZJQ0FDQU8gRSBTVVBFUk1FUkNBRE8gR09CSVJBQkEgTFREQTtQQU5JRklDQUNBTyBFIFNVUEVS
+TUVSQ0FETyBHT0JJUkFCQTs3OTk5ODU3NDAwO0VESU5BTERPIERFIE9MSVZFSVJBOzs7Ozs7Ow0KVE9U
+QUw7ODs7Ozs7Ozs7OzsNCjs7Ozs7Ozs7Ozs7DQo7VklEUkHHQVJJQTs7Ozs7Ozs7OzsNCjtURU1QRVJC
+T1ggQ09NRVJDSUFMIERFIFZJRFJPUyBMVERBIE1FO1RFTVBFUkJPWDs3OTk5OTg0MTcxNjtKT1NJVkFM
+RE8gREUgU09VWkEgU0FOVE9TOzs7Ozs7Ow0KVE9UQUw7MTs7Ozs7Ozs7OzsNCjs7Ozs7Ozs7Ozs7DQo7
+Ozs7Ozs7Ozs7Ow0KVE9UQUwgREUgRU1QUkVTQVM7MTM2Ozs7Ozs7Ozs7Ow0KOzs7Ozs7Ozs7OzsNCjs7
+Ozs7Ozs7Ozs7DQo7Ozs7Ozs7Ozs7Ow0KOzs7Ozs7Ozs7OzsNCjs7Ozs7Ozs7Ozs7DQo7Ozs7Ozs7Ozs7
+Ow0KOzs7Ozs7Ozs7OzsNCjs7Ozs7Ozs7Ozs7DQo7Ozs7Ozs7Ozs7Ow0KOzs7Ozs7Ozs7OzsNCjs7Ozs7
+Ozs7Ozs7DQo7Ozs7Ozs7Ozs7Ow0KOzs7Ozs7Ozs7OzsNCjs7Ozs7Ozs7Ozs7DQo7Ozs7Ozs7Ozs7Ow0K
+Ozs7Ozs7Ozs7OzsNCjs7Ozs7Ozs7Ozs7DQo7Ozs7Ozs7Ozs7Ow0KOzs7Ozs7Ozs7OzsNCjs7Ozs7Ozs7
+Ozs7DQo7Ozs7Ozs7Ozs7Ow0KOzs7Ozs7Ozs7OzsNCjs7Ozs7Ozs7Ozs7DQo7Ozs7Ozs7Ozs7Ow0KOzs7
+Ozs7Ozs7OzsNCjs7Ozs7Ozs7Ozs7DQo7Ozs7Ozs7Ozs7Ow0KOzs7Ozs7Ozs7OzsNCjs7Ozs7Ozs7Ozs7
+DQo7Ozs7Ozs7Ozs7Ow0KOzs7Ozs7Ozs7OzsNCjs7Ozs7Ozs7Ozs7DQo7Ozs7Ozs7Ozs7Ow0KOzs7Ozs7
+Ozs7OzsNCjs7Ozs7Ozs7Ozs7DQo7Ozs7Ozs7Ozs7Ow0KOzs7Ozs7Ozs7OzsNCg==
+    `;
+
+    const searchInput = document.getElementById("search");
+    const branchSelect = document.getElementById("branch");
+    const resetButton = document.getElementById("reset");
+    const cards = document.getElementById("cards");
+    const summary = document.getElementById("summary");
+    const emptyState = document.getElementById("emptyState");
+    const totalCompanies = document.getElementById("totalCompanies");
+    const totalBranches = document.getElementById("totalBranches");
+    const visibleCompanies = document.getElementById("visibleCompanies");
+
+    function decodeCsv() {
+      const normalized = csvBase64.replace(/\s+/g, "");
+      const binary = atob(normalized);
+      const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
+      const decoder = (() => {
+        try {
+          return new TextDecoder("windows-1252");
+        } catch {
+          return new TextDecoder("iso-8859-1");
+        }
+      })();
+
+      return decoder.decode(bytes);
+    }
+
+    function parseCsv(rawCsv) {
+      const lines = rawCsv.split(/\r?\n/);
+      const records = [];
+      let currentBranch = "";
+
+      for (const line of lines) {
+        if (!line.trim()) {
+          continue;
+        }
+
+        const cols = line.split(";");
+        if (cols.length < 5) {
+          continue;
+        }
+
+        const first = cols[0].trim();
+        const empresa = cols[1].trim();
+        const fantasia = cols[2].trim();
+        const contato = cols[3].trim();
+        const responsavel = cols[4].trim();
+
+        if (first === "TOTAL") {
+          continue;
+        }
+
+        if (empresa && !fantasia && !contato && !responsavel) {
+          currentBranch = empresa;
+          continue;
+        }
+
+        if (!currentBranch || !empresa) {
+          continue;
+        }
+
+        records.push({
+          ramo: currentBranch,
+          empresa,
+          fantasia,
+          contato,
+          responsavel
+        });
+      }
+
+      return records;
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/\"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function formatPhone(phone) {
+      const digits = phone.replace(/\D/g, "");
+
+      if (digits.length === 11) {
+        return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
+      }
+
+      if (digits.length === 10) {
+        return `(${digits.slice(0, 2)}) ${digits.slice(2, 6)}-${digits.slice(6)}`;
+      }
+
+      return phone;
+    }
+
+    function cardTemplate(item) {
+      const fantasy = item.fantasia ? `
+        <div>
+          <span>Nome fantasia</span>
+          <strong>${escapeHtml(item.fantasia)}</strong>
+        </div>
+      ` : "";
+
+      const contact = item.contato ? `
+        <div>
+          <span>Contato</span>
+          <a href="tel:${item.contato.replace(/\D/g, "")}">${escapeHtml(formatPhone(item.contato))}</a>
+        </div>
+      ` : "";
+
+      const responsible = item.responsavel ? `
+        <div>
+          <span>Responsavel</span>
+          <strong>${escapeHtml(item.responsavel)}</strong>
+        </div>
+      ` : "";
+
+      return `
+        <article class="card">
+          <div class="tag">${escapeHtml(item.ramo)}</div>
+          <h2>${escapeHtml(item.empresa)}</h2>
+          <div class="meta">
+            ${fantasy}
+            ${contact}
+            ${responsible}
+          </div>
+        </article>
+      `;
+    }
+
+    const records = parseCsv(decodeCsv());
+    const branches = [...new Set(records.map((item) => item.ramo))].sort((a, b) => a.localeCompare(b, "pt-BR"));
+
+    totalCompanies.textContent = String(records.length);
+    totalBranches.textContent = String(branches.length);
+
+    branchSelect.insertAdjacentHTML(
+      "beforeend",
+      branches.map((branch) => `<option value="${escapeHtml(branch)}">${escapeHtml(branch)}</option>`).join("")
+    );
+
+    function render() {
+      const term = searchInput.value.trim().toLocaleLowerCase("pt-BR");
+      const selectedBranch = branchSelect.value;
+
+      const filtered = records.filter((item) => {
+        const matchesBranch = !selectedBranch || item.ramo === selectedBranch;
+        const searchable = [item.ramo, item.empresa, item.fantasia, item.contato, item.responsavel]
+          .join(" ")
+          .toLocaleLowerCase("pt-BR");
+        const matchesTerm = !term || searchable.includes(term);
+        return matchesBranch && matchesTerm;
+      });
+
+      visibleCompanies.textContent = String(filtered.length);
+      summary.textContent = `${filtered.length} empresa(s) exibida(s) de ${records.length} no total.`;
+      emptyState.style.display = filtered.length ? "none" : "block";
+      cards.innerHTML = filtered.map(cardTemplate).join("");
+    }
+
+    searchInput.addEventListener("input", render);
+    branchSelect.addEventListener("change", render);
+    resetButton.addEventListener("click", () => {
+      searchInput.value = "";
+      branchSelect.value = "";
+      render();
+    });
+
+    render();
+  </script>
+</body>
+</html>
